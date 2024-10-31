@@ -1,8 +1,8 @@
 #Exercise 4: Primitive Quiz - 30 Marks
-#Optional message
+#Optional message to know what the program is all about
 print("Instructions:\nThis quiz is about the Capitals of the European Countries to give more knowledge.\n")
 
-#start the list of questions, along with it's correct answers
+#create a list of questions and it's correct answers
 def quiz():
     questions = {
         "1. What is the Capital of France?": "Paris",
@@ -17,7 +17,7 @@ def quiz():
         "10. What is the Capital of the Spain": "Madrid"
     }
 
-    #Modify the program to accept answers regardless of the capitalization
+    #The programmer set a condition to accept answers regardless of the capitalization
     for question, correct_answer in questions.items():
         user_answer = input(question + " ").strip().lower()
         if user_answer == correct_answer.lower():
@@ -25,4 +25,5 @@ def quiz():
         else:
             print("Wrong! The correct answer is " + correct_answer + ".")
 
+#Print the quiz
 quiz()
