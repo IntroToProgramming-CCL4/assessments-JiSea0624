@@ -1,21 +1,23 @@
 #Exercise 3: Biography - 25 Marks
-#Function to get user input and validate age
+#The programmer is asking the user for his/her name, hometown and age
 def get_user_info():
     name = input("Enter your name: ")
     hometown = (input("Enter your hometown: "))
 
+    #The integer that the user will be inputting must be checked if it is correct
     while True:
         age = (input("Enter your age: "))
         if age.isdigit():
             age = int(age)
             break
+        #If not, the cycle of asking the age will be repeated until the condition is met
         else:
             print("Please enter a valid integer for age.")
+    #The programmer returns the information to the user
     return {"name": name, "hometown": hometown, "age": age}
 
-#Get user information
+#The programmer is setting a condition to get the user's information
 user_info = get_user_info()
 
-#Print the values on separate lines using a single print() statement
-print()
-print(f"Name: {user_info['name']}\nHometown: {user_info['hometown']}\nAge: {user_info['age']}")
+#Print the values on separate lines to avoid confusion 
+print(f"\nName: {user_info['name']}\nHometown: {user_info['hometown']}\nAge: {user_info['age']}")
