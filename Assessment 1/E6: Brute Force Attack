@@ -1,19 +1,23 @@
 #Exercise 6: Brute Force Attack - 30 Marks
+#Create a command regarding the correct password and max limit of attempts 
 def password_entry_system():
     correct_password = "12345"
     max_attempts = 5
     attempts = 0
 
+    #Start asking the user for the password
     while attempts < max_attempts:
         password = input("Enter the password: ")
         if password == correct_password:
             print("Access granted.")
             return
+        #If the user input an incorrect password, the programmer created a command in which the user will be notified regarding the number of attempts left
         else:
             attempts += 1
             remaining_attempts = max_attempts - attempts
             if remaining_attempts > 0:
                 print(f"Incorrect password. You have {remaining_attempts} attempts left.")
+            #All 5 attempts were used in inputting the password leading to the program to alert the authorities 
             else:
                 print("Maximum attempts reached. Authorities have been alerted.")
                 return
