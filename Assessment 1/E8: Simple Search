@@ -1,9 +1,9 @@
 #Exercise 8: Simple Search - 30 Marks
-#Create a command that will notify the user if the name is on the list or not
+#Create a program that will notify the user if the name is on the list or not
 def search_name (names_list, search_term):
     if search_term in names_list:
         print(f"{search_term} found in the list.")
-    #If not, a message will print that the name is not on the list and the command will end 
+    #If not, a message will print that the name is not on the list and the program will end
     else:
         print(f"{search_term} not found in the list.")
 
