@@ -1,5 +1,5 @@
 #Exercise 10: Is it even? - 35 Marks
-#Create a command that will send after checking whether it is even or odd
+#Create a program that will send after checking whether it is even or odd
 def is_even_or_odd(number):
     if number % 2 == 0:
         return f"{number} is a Even."
