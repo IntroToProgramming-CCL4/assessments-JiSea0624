@@ -1,19 +1,19 @@
 #Exercise 10: Is it even? - 35 Marks
+#Create a command that will send after checking whether it is even or odd
 def is_even_or_odd(number):
-    """Determine if the number is even or odd"""
     if number % 2 == 0:
         return f"{number} is a Even."
     else:
         return f"{number} is a Odd."
 
 def main():
-    #Ask the user for a numer
+    #Ask the user for a number
     number = int(input("Enter a number: "))
 
     #Determine if the number is even or odd
     result = is_even_or_odd(number)
 
-    #print the result
+    #Print the result
     print(result)
 
 if __name__ == "__main__":
