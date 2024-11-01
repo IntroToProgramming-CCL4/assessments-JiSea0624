@@ -1,7 +1,7 @@
 #Exercise 2: Simple Sums - 15 Marks
 #The first and second variable were both given
-num1 = 8
-num2 = 10
+num1 = 8 #first variable
+num2 = 10 #second variable
 #Define a new variable to store the sum of the first two numbers
 total = num1 + num2
 #Print the value of the sum.
