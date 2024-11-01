@@ -11,7 +11,7 @@ def password_entry_system():
         if password == correct_password:
             print("Access granted.")
             return
-        #If the user input an incorrect password, the programmer created a command in which the user will be notified regarding the number of attempts left
+        #If the user input an incorrect password, the program will notify the user regarding the number of attempts left
         else:
             attempts += 1
             remaining_attempts = max_attempts - attempts
