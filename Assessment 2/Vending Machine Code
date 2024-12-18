@@ -1,0 +1,202 @@
+# Create a dictionary containing the number to input, name of item and price
+items = {
+    "01": {"name": "Piattos Cheese", "price": 10.50},
+    "02": {"name": "Pringles Original", "price": 12.99},
+    "03": {"name": "Clover Chips Cheese", "price": 10.99},
+    "04": {"name": "Doritos Nacho Cheese", "price": 13.69},
+    "05": {"name": "M&M Milk Chocolate", "price": 8.60},
+    "06": {"name": "Potchi Strawberry", "price": 10.00},
+    "07": {"name": "Kitkat Original", "price": 10.99},
+    "08": {"name": "Kunafa Chocolate", "price": 50.60},
+    "09": {"name": "Fanta Orange", "price": 7.00},
+    "10": {"name": "Coke Original", "price": 8.69},
+    "11": {"name": "Al Ain Water", "price": 1.00},
+    "12": {"name": "Royal Orange", "price": 6.80},
+}
+
+# Create another dictionary containing the number of stocks per item
+stock = {
+    "Piattos Cheese": 5,
+    "Pringles Original": 7,
+    "Clover Chips Cheese": 4,
+    "Doritos Nacho Cheese": 6,
+    "M&M Milk Chocolate": 8,
+    "Potchi Strawberry": 12,
+    "Kitkat Original": 2,
+    "Kunafa Chocolate": 1,
+    "Fanta Orange": 10,
+    "Coke Original": 6,
+    "Al Ain Water": 3,
+    "Royal Orange": 5,
+}
+
+# Create a condition that rewards loyal customers
+def loydisc():
+    name = input("Enter your name: ").strip().lower()
+
+    # Save a blank file that stores the names of loyal customers
+    try:
+        with open("loyalty_discount.txt", "r") as file:
+            names = file.readlines()  # Read all lines (names) from the file
+    # If the file doesn't exist, create an empty list.
+    except FileNotFoundError:
+        names = []
+
+    # Count how many times the user has appeared in the file
+    name_count = sum(1 for line in names if line.strip().lower() == name)
+
+    # Append the user's name to the file to track their purchases
+    with open("loyalty_discount.txt", "a") as file:
+        file.write(name + "\n")
+
+    # Optional: Greet the user and display how many times they've made a purchase
+    print(f"Welcome {name.capitalize()}! This is your {name_count + 1} time(s) buying.")
+
+    # Check if the user is a loyal customer or not
+    if name_count >= 5:
+        # If they have, create a condition that subtracts the discount percentage from the original price of the items
+        print("Congratulations! You've purchased more than 5 times, you get a Discount!")
+        discount_percentage = 10
+        print(f"All prices are discounted by {discount_percentage}!")
+
+        # Apply and reduce the discount percentage to all items in the vending machine
+        for key, item in items.items():
+            item['price'] *= (1 - discount_percentage / 100)
+
+    # Show the list of available items and their updated prices
+    print("\nThis is our available items:")
+    for key, item in items.items():
+        item_name = item["name"]
+        price = item["price"]
+        print(f"{key:}\t{item_name:<25} AED: {price:>6.2f}    (Stock: {stock[item_name]:<2})")
+
+class VendingMachine:
+    def vendi(chine):
+        # Initialize the machine with no money inserted and an empty list of selected items
+        chine.inserted_money = 0.0
+        chine.selected_items = []
+        chine.total_price = 0.0
+
+    def recommendation(chine, suggestion):
+        # Create a dictionary that you would like to recommend to the customer
+        recommendations = {
+            "01": "10", "02": "09", "03": "12", "04": "11",
+            "05": "10", "06": "09", "07": "11", "08": "09"
+        }
+        return recommendations.get(suggestion, None)
+
+    # Create a condition that will check if the item selected still available or has a stock
+    def selection(chine, item_code):
+        if item_code not in items:
+            print("Error: Item not available.")
+            return False
+        item_name = items[item_code]["name"]
+
+        if stock[item_name] <= 0:
+            print(f"Error: {item_name} is out of stock.")
+            return False
+
+        print(f"Selected item: {item_name}")
+        chine.selected_items.append(item_name)
+        chine.total_price += items[item_code]["price"]
+        stock[item_name] -= 1
+
+        #Create a command regarding recommendation/suggestion to the user and a free will to buy or not the item
+        suggested_code = chine.recommendation(item_code)
+        if suggested_code:
+            suggested_item = items[suggested_code]
+            suggested_name = suggested_item["name"]
+            suggested_price = suggested_item["price"]
+            print(f"We recommend: {suggested_name} for AED {suggested_price:.2f}.")
+            choice = input("Would you like to add this item? (yes/no): ").strip().lower()
+            if choice == "yes":
+                if stock[suggested_name] > 0:
+                    stock[suggested_name] -= 1
+                    chine.selected_items.append(suggested_name)
+                    chine.total_price += suggested_price
+                    print(f"{suggested_name} added to your purchase!")
+                else:
+                    print(f"Sorry, {suggested_name} is out of stock.")
+            else:
+                print("No problem, continuing.")
+        return True
+
+    # Check if enough money has been inserted
+    def insert_money(chine):
+        print(f"Your total is: AED {chine.total_price:.2f}")
+        while chine.inserted_money < chine.total_price:
+            try:
+                money = float(input("Enter money: "))
+                if money <= 0:
+                    print("Error: Enter a valid amount.")
+                    continue
+                chine.inserted_money += money
+
+                if chine.inserted_money < chine.total_price:
+                    print(f"Remaining: AED {chine.total_price - chine.inserted_money:.2f}")
+                else:
+                    print(f"Total inserted: AED {chine.inserted_money:.2f}")
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+
+    # Refunds the inserted money, if money has been inserted
+    def refund_money(chine):
+        if chine.inserted_money > 0:
+            print(f"Refunding: AED {chine.inserted_money:.2f}")
+            chine.inserted_money = 0.0
+        else:
+            print("No money to refund.")
+
+    # Check if enough money has been inserted
+    def dispense_and_print_receipt(chine):
+        #Compute the change
+        change = chine.inserted_money - chine.total_price
+
+        # Print receipt
+        print("\n------ Receipt ------")
+        for item in chine.selected_items:
+            price = items[next(key for key, value in items.items() if value["name"] == item)]["price"]
+            print(f"{item}: AED {price:.2f}")
+
+        print(f"Total: AED {chine.total_price:.2f}")
+        print(f"Money inserted: AED {chine.inserted_money:.2f}")
+        print(f"Change: AED {change:.2f}")
+        print("\nThank you for your purchase!")
+        print("----------------------\n")
+        print(f"Dispensing items: {', '.join(chine.selected_items)}.")
+
+        # Reset the machine for the next transaction
+        chine.inserted_money = 0.0
+        chine.selected_items.clear()
+        chine.total_price = 0.0
+        return True
+
+# Main Function
+def main():
+    loydisc()  # Call loyalty discount once at the beginning of the session
+    while True:
+        vm = VendingMachine()
+        vm.vendi()  # Call the custom initialization method
+        while True:
+            print("\nOptions:\n1. Select item\n2. Insert money\n3. Dispense Item & Receipt\n4. Refund money\n5. Exit")
+            choice = input("Choose an option: ").strip()
+            if choice == "1":
+                item_code = input("Enter item code: ").strip()
+                vm.selection(item_code)
+            elif choice == "2":
+                vm.insert_money()
+            elif choice == "3":
+                if vm.dispense_and_print_receipt():
+                    break
+            elif choice == "4":
+                vm.refund_money()
+            elif choice == "5":
+                print("Thank you for using the vending machine!")
+                return
+            else:
+                print("Invalid choice. Try again.")
+
+# Run the main function
+# Ensures the main() function only runs when the script is executed directly
+if __name__ == "__main__":
+    main()
